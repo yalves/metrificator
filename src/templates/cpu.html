@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Metrificator</title>
+</head>
+
+<body>
+    {%include 'navbar.html'%}
+    <br>
+    <div class="container">
+        <h1 class="display-4">CPU</h1>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-6"><h2>Processador: {{processor}}</h2></div>
+              <div class="col-sm-6"><h2>Nó: {{node}}</h2></div>
+              <Br></Br>
+              <Br></Br>
+              <div class="col-sm-6"><h2>Plataforma: {{platform}}</h2></div>
+              <div class="col-sm-6"><h2>Sistema: {{system}}</h2></div>
+              <br>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-sm-12">
+                <h1>Porcentagem de uso</h1>
+                <div class="progress" style="height: 40px;">
+                  <div id="progress-bar" class="progress-bar" role="progressbar" style="width: {{ disk_percentage }}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{ disk_percentage }}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      setInterval(function() {
+        $.ajax(
+        {
+            type:"GET",
+            url: "/cpu_percentage",
+            success: function( data ) 
+            {
+              document.getElementById("progress-bar").style.width = data + "%";
+              document.getElementById("progress-bar").innerHTML= data + "%"; 
+            }
+        })
+      }, 1000); //1 second
+    </script>
+</body>
+
+</html>

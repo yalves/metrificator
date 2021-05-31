@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import memory, disk, memory_percentage
+from .views import memory, disk, memory_percentage, network, cpu, cpu_percentage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('memory', memory),
-    path('disk', disk),
-    path('memory_percentage', memory_percentage),
+    path('memory/', memory, name='memory'),
+    path('memory_percentage/', memory_percentage, name='memory_percentage'),
+    path('disk/', disk, name='disk'),
+    path('network/', network, name='network'),
+    path('cpu/', cpu, name='cpu'),
+    path('cpu_percentage/', cpu_percentage, name='cpu_percentage'),
+    path('', memory),
 ]
