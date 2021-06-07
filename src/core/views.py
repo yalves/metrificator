@@ -4,6 +4,28 @@ from django.http import HttpResponse
 import platform
 import psutil
 
+def index(request):
+  memory = psutil.virtual_memory()
+  disk = psutil.disk_usage('.')
+  network = psutil.net_if_addrs()
+  firstKey = list(network.keys())[0]
+  ip = network[firstKey][1].address
+  cpu_percentage = psutil.cpu_percent()
+  context = {
+      'memory': memory.percent,
+      'disk_total': round(disk.total/(1024*1024*1024), 2),
+      'disk_used': round(disk.used/(1024*1024*1024), 2),
+      'disk_free': round(disk.free/(1024*1024*1024), 2),
+      'disk_percentage': disk.percent,
+      'ip': ip,
+      'processor': platform.processor(),
+      'node': platform.node(),
+      'platform': platform.platform(),
+      'system': platform.system(),
+      'cpu_percent': cpu_percentage,
+  }
+  return render(request, 'index.html', context)
+
 def memory(request):
   memory = psutil.virtual_memory()
   context = {
