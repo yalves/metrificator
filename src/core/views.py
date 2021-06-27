@@ -83,3 +83,22 @@ def files(request):
   }
   return render(request, 'files.html', context)
 
+def processes(request):
+  processes = []
+
+  for proc in psutil.process_iter():
+    try:
+        pinfo = proc.as_dict(attrs=['pid', 'name', 'cpu_percent', 'memory_percent'])
+        print(pinfo)
+        pinfo['memory_percent'] = round(pinfo['memory_percent'], 3)
+        processes.append(pinfo)
+    except psutil.NoSuchProcess:
+        pass
+    else:
+        print(pinfo)
+
+  context = {
+    'processes': processes,
+  }
+  return render(request, 'processes.html', context)
+

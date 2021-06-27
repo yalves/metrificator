@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Metrificator</title>
+</head>
+
+<body>
+    {%include 'navbar.html'%}
+    <br>
+    <div class="container">
+        <h1 class="display-4">Processos</h1>
+        <table class="table">
+          <thead>
+            <tr>
+                <th>PID</th>
+                <th>Nome</th>
+                <th>Processamento</th>
+                <th>Memória</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for process in processes %}
+            <tr>
+                <td>{{process.pid}}</td>
+                <td>{{process.name}}</td>
+                <td>{{process.cpu_percent}}%</td>
+                <td>{{process.memory_percent}}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
