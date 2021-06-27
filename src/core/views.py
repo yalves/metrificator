@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from os import listdir
+from os.path import isfile, join
+from pathlib import Path
+
 
 import platform
 import psutil
@@ -68,4 +72,14 @@ def cpu(request):
 def cpu_percentage(request):
   cpu_percentage = psutil.cpu_percent()
   return HttpResponse(cpu_percentage)
+
+def files(request):
+  path = Path(__file__).parent.parent
+  files = [f for f in listdir(path) if isfile(join(path, f))]
+  directories = [f for f in listdir(path) if not isfile(join(path, f))]
+  context = {
+    'files': ', '.join(files),
+    'directories': ', '.join(directories),
+  }
+  return render(request, 'files.html', context)
 

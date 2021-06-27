@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import memory, disk, memory_percentage, network, cpu, cpu_percentage, index
+from .views import memory, disk, memory_percentage, network, cpu, cpu_percentage, index, files
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +25,6 @@ urlpatterns = [
     path('network/', network, name='network'),
     path('cpu/', cpu, name='cpu'),
     path('cpu_percentage/', cpu_percentage, name='cpu_percentage'),
+    path('files/', files, name='files'),
     path('', index, name='index'),
 ]
