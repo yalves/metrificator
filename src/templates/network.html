@@ -16,9 +16,8 @@
 <body>
     {%include 'navbar.html'%}
     <br>
-    {{ip}}
     <div class="container">
-      <h1 class="display-4">Rede</h1>
+      <h1 class="display-4">Máquinas na rede</h1>
       <table class="table">
         <thead>
           <tr>
@@ -31,6 +30,27 @@
           <tr>
               <td>{{machine.LAN_IP}}</td>
               <td>{{machine.MAC_ADDRESS|default_if_none:"Não foi possível identificar"}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h1 class="display-4">Conexões deste computador</h1>
+      <table class="table">
+        <thead>
+          <tr>
+              <th>Endereço local</th>
+              <th>Porta local</th>
+              <th>Endereço remoto</th>
+              <th>Porta remota</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for connection in connections %}
+          <tr>
+              <td>{{connection.laddr.ip}}</td>
+              <td>{{connection.laddr.port}}</td>
+              <td>{{connection.raddr.ip}}</td>
+              <td>{{connection.raddr.port}}</td>
           </tr>
           {% endfor %}
         </tbody>

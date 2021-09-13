@@ -29,3 +29,4 @@ urlpatterns = [
     path('processes/', processes, name='processes'),
     path('', index, name='index'),
 ]
+

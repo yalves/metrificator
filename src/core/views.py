@@ -5,7 +5,6 @@ import os, re
 from os.path import isfile, join
 from pathlib import Path
 
-
 import platform
 import psutil
 import time
@@ -63,19 +62,24 @@ def disk(request):
 
 def network(request):
   start_time = time.time()
+  context = {}
 
-  full_results = [re.findall('^[\w\?\.]+|(?<=\s)\([\d\.]+\)|(?<=at\s)[\w\:]+', i) for i in os.popen('arp -a')]
-  final_results = [dict(zip(['IP', 'LAN_IP', 'MAC_ADDRESS'], i)) for i in full_results]
-  final_results = [{**i, **{'LAN_IP':i['LAN_IP'][1:-1]}} for i in final_results]
-  # print(final_results)
-  network = psutil.net_if_addrs()
-  # print(list(network.keys()))
-  firstKey = list(network.keys())[1]
-  ip = network[firstKey][1].address
-  context = {
-    'ip': ip,
-    'network': final_results,
-  }
+  try:
+    full_results = [re.findall('^[\w\?\.]+|(?<=\s)\([\d\.]+\)|(?<=at\s)[\w\:]+', i) for i in os.popen('arp -a')]
+    final_results = [dict(zip(['IP', 'LAN_IP', 'MAC_ADDRESS'], i)) for i in full_results]
+    final_results = [{**i, **{'LAN_IP':i['LAN_IP'][1:-1]}} for i in final_results]
+    network = psutil.net_if_addrs()
+    firstKey = list(network.keys())[1]
+    ip = network[firstKey][1].address
+    connections = psutil.net_connections()
+    context = {
+      'ip': ip,
+      'network': final_results,
+      'connections': connections
+    }
+  except psutil.AccessDenied:
+    pass
+  
   print("--- %s seconds elapsed in 'network' call ---" % (time.time() - start_time))
   return render(request, 'network.html', context)
 
@@ -109,7 +113,6 @@ def files(request):
   return render(request, 'files.html', context)
 
 def processes(request):
-  start_time = time.time()
   start_time = time.time()
   processes = []
 
