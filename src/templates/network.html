@@ -16,15 +16,26 @@
 <body>
     {%include 'navbar.html'%}
     <br>
+    {{ip}}
     <div class="container">
-        <h1 class="display-4">Rede</h1>
-
-        <div class="row">
-            <div class="col-sm-12">
-              <h1>IP: {{ip}}</h1>
-            </div>
-        </div>
-    </div>
+      <h1 class="display-4">Rede</h1>
+      <table class="table">
+        <thead>
+          <tr>
+              <th>IP</th>
+              <th>Endereço MAC</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for machine in network %}
+          <tr>
+              <td>{{machine.LAN_IP}}</td>
+              <td>{{machine.MAC_ADDRESS|default_if_none:"Não foi possível identificar"}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
 </body>
 
 </html>
